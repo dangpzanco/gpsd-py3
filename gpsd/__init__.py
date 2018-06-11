@@ -82,7 +82,7 @@ class GpsResponse(object):
         self.hspeed = 0
         self.climb = 0
         self.time = ''
-        self.error = {}
+        self.error = {'c': 0, 's': 0, 't': 0, 'v': 0, 'x': 0, 'y': 0}
 
     @classmethod
     def from_json(cls, packet):
@@ -227,6 +227,27 @@ class GpsResponse(object):
             time = time.replace(tzinfo=datetime.timezone.utc).astimezone()
 
         return time
+    
+    def get_raw_data(self):
+        """ Get all the raw data as dict
+
+        :return: dict[str, float, dict]
+        """
+        data = {}
+        
+        data['mode'] = self.mode
+        data['sats'] = self.sats
+        data['sats_valid'] = self.sats_valid
+        data['lon'] = self.lon
+        data['lat'] = self.lat
+        data['alt'] = self.alt
+        data['track'] = self.track
+        data['hspeed'] = self.hspeed
+        data['climb'] = self.climb
+        data['time'] = self.time
+        data['error'] = self.error
+        
+        return data
 
     def __repr__(self):
         modes = {
